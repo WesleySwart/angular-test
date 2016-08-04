@@ -40,7 +40,7 @@
       <packageName>test.generated</packageName>
 
       <!-- The destination directory of your generated classes. Using Maven directory layout here -->
-      <directory>C:/Users/ybaker.CSCFED/Dev/Training/src/main/java</directory>
+      <directory>C:/Users/ybaker.CSCFED/Dev/Angular/server/src/main/java</directory>
     </target>
   </generator>
 </configuration>
