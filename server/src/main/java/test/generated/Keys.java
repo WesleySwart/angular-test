@@ -6,6 +6,12 @@ package test.generated;
 
 import javax.annotation.Generated;
 
+import org.jooq.UniqueKey;
+import org.jooq.impl.AbstractKeys;
+
+import test.generated.tables.Login;
+import test.generated.tables.records.LoginRecord;
+
 
 /**
  * A class modelling foreign key relationships between tables of the <code>users</code> 
@@ -30,6 +36,7 @@ public class Keys {
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
+    public static final UniqueKey<LoginRecord> KEY_LOGIN_PRIMARY = UniqueKeys0.KEY_LOGIN_PRIMARY;
 
     // -------------------------------------------------------------------------
     // FOREIGN KEY definitions
@@ -39,4 +46,8 @@ public class Keys {
     // -------------------------------------------------------------------------
     // [#1459] distribute members to avoid static initialisers > 64kb
     // -------------------------------------------------------------------------
+
+    private static class UniqueKeys0 extends AbstractKeys {
+        public static final UniqueKey<LoginRecord> KEY_LOGIN_PRIMARY = createUniqueKey(Login.LOGIN, "KEY_login_PRIMARY", Login.LOGIN.USERNAME);
+    }
 }

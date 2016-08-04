@@ -7,51 +7,65 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Map;
 
+import org.jooq.Configuration;
 import org.jooq.DSLContext;
 import org.jooq.Record1;
 import org.jooq.Result;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
+import org.jooq.impl.DefaultConfiguration;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import test.generated.tables.daos.LoginDao;
+import test.generated.tables.pojos.Login;
+
 @RestController
 public class ForgotPasswordContoller
 {
-	public User ChangeUser(String name, String pass)
+	@Value("${spring.datasource.url}")
+	String db_url;
+	@Value("${spring.datasource.username}")
+	String username;
+	@Value("${spring.datasource.password}")
+	String password;
+	
+	public Login ChangeUser(String name, String pass)
 	{
-		String db_url = "jdbc:mysql://localhost:3306";
-		String username = "root";
-		String password = "lilbro2";
-		
-		User user = new User(name, pass);
 		
 		try (Connection conn = DriverManager.getConnection(db_url, username, password))
 		{	
+			Configuration configuration = new DefaultConfiguration().set(conn).set(SQLDialect.MYSQL);
 			DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+			LoginDao loginDao = new LoginDao(configuration);
+			
+			Login login = new Login(name, pass);
 			
 			//check to see if user entered username exists
-			Result<Record1<String>> result_1 = create.select(LOGIN.USERNAME).from(LOGIN).whereExists(create.selectOne().from(LOGIN).where(LOGIN.USERNAME.eq(name))).fetch();
-			
 			//if it does change the password
-			if(result_1.size() != 0)
+			if(loginDao.exists(login))
 			{
-				create.update(LOGIN).set(LOGIN.PASSWORD, user.getPassword()).where(LOGIN.USERNAME.equal(user.getUsername())).execute();    
+				//create.update(LOGIN).set(LOGIN.PASSWORD, user.getPassword()).where(LOGIN.USERNAME.equal(user.getUsername())).execute();
+				login.setUsername(name);
+				login.setPassword(pass);
+				loginDao.update(login);
+				create.close();
+				conn.close();
+				return login;
 			}
 			//if it doesnt, make user 1 so we know to fail them
 			else
 			{
-				user.setUsername("1");
-				user.setPassword("1");
+				login.setUsername("1");
+				login.setPassword("1");
 				create.close();
 				conn.close();
-				return user;
+				return login;
 			}
-        	create.close();
-			conn.close();
 				
 		}
 		catch (SQLException se)
@@ -63,7 +77,7 @@ public class ForgotPasswordContoller
 			e.printStackTrace();
 		}
 		
-		return user;
+		return null;
 	}
 	
 	@RequestMapping(value = "/forgot-javaconfig", method = RequestMethod.POST)
@@ -74,7 +88,7 @@ public class ForgotPasswordContoller
 		
 		try
 		{
-			User profile = ChangeUser(username, password);
+			Login profile = ChangeUser(username, password);
 			if(profile.getUsername() == "1" && profile.getPassword() == "1")
 			{
 				return("{\"message\":\"Account not found!\"}");

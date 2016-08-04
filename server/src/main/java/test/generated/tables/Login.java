@@ -4,14 +4,19 @@
 package test.generated.tables;
 
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.annotation.Generated;
 
 import org.jooq.Field;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
+import org.jooq.UniqueKey;
 import org.jooq.impl.TableImpl;
 
+import test.generated.Keys;
 import test.generated.Users;
 import test.generated.tables.records.LoginRecord;
 
@@ -29,7 +34,7 @@ import test.generated.tables.records.LoginRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Login extends TableImpl<LoginRecord> {
 
-    private static final long serialVersionUID = -686496943;
+    private static final long serialVersionUID = -2054529885;
 
     /**
      * The reference instance of <code>users.login</code>
@@ -47,12 +52,12 @@ public class Login extends TableImpl<LoginRecord> {
     /**
      * The column <code>users.login.username</code>.
      */
-    public final TableField<LoginRecord, String> USERNAME = createField("username", org.jooq.impl.SQLDataType.VARCHAR.length(20), this, "");
+    public final TableField<LoginRecord, String> USERNAME = createField("username", org.jooq.impl.SQLDataType.VARCHAR.length(45).nullable(false), this, "");
 
     /**
      * The column <code>users.login.password</code>.
      */
-    public final TableField<LoginRecord, String> PASSWORD = createField("password", org.jooq.impl.SQLDataType.VARCHAR.length(20), this, "");
+    public final TableField<LoginRecord, String> PASSWORD = createField("password", org.jooq.impl.SQLDataType.VARCHAR.length(45).nullable(false), this, "");
 
     /**
      * Create a <code>users.login</code> table reference
@@ -82,6 +87,22 @@ public class Login extends TableImpl<LoginRecord> {
     @Override
     public Schema getSchema() {
         return Users.USERS;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UniqueKey<LoginRecord> getPrimaryKey() {
+        return Keys.KEY_LOGIN_PRIMARY;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<UniqueKey<LoginRecord>> getKeys() {
+        return Arrays.<UniqueKey<LoginRecord>>asList(Keys.KEY_LOGIN_PRIMARY);
     }
 
     /**
