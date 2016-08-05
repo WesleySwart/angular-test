@@ -14,7 +14,10 @@ import org.jooq.Result;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 import org.jooq.impl.DefaultConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,14 +28,26 @@ import test.generated.tables.daos.LoginDao;
 import test.generated.tables.pojos.Login;
 
 @RestController
-public class ForgotPasswordContoller
+@ContextConfiguration(locations = {"/jooq-spring.xml"})
+@ComponentScan("main.java.hello")
+public class ForgotPasswordController
 {
+	private DSLContext create;
+	
 	@Value("${spring.datasource.url}")
 	String db_url;
 	@Value("${spring.datasource.username}")
 	String username;
 	@Value("${spring.datasource.password}")
 	String password;
+
+	
+	@Autowired
+	public ForgotPasswordController(DSLContext create)
+	{
+		this.create = create;
+	}
+	
 	
 	public Login ChangeUser(String name, String pass)
 	{
@@ -40,7 +55,6 @@ public class ForgotPasswordContoller
 		try (Connection conn = DriverManager.getConnection(db_url, username, password))
 		{	
 			Configuration configuration = new DefaultConfiguration().set(conn).set(SQLDialect.MYSQL);
-			DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
 			LoginDao loginDao = new LoginDao(configuration);
 			
 			Login login = new Login(name, pass);
