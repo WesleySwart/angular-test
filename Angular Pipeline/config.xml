@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.3">
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.9">
+    <script>node {
+   // Mark the code checkout &apos;stage&apos;....
+   stage &apos;Git Checkout&apos;
+
+   // Get some code from a GitHub repository
+   git url: &apos;C:\\Users\\ybaker.CSCFED\\Dev\\Training\\.git\\&apos;
+
+   // Get the maven tool.
+   // ** NOTE: This &apos;M3&apos; maven tool must be configured
+   // **       in the global configuration.           
+   def mvnHome = tool &apos;M3&apos;
+
+   // Mark the code build &apos;stage&apos;....
+   stage &apos;Build and Run JUnit Tests&apos;
+   // Run the maven build
+   bat &quot;mvn clean package&quot;
+   //sh &quot;mvn clean package&quot;
+   archive &apos;target/Training-0.0.1-SNAPSHOT.war&apos;
+   step([$class: &apos;JUnitResultArchiver&apos;, testResults: &apos;**/target/surefire-reports/TEST-*.xml&apos;])
+  
+   // Mark the code integration &apos;stage&apos;
+   stage &apos;Deploying to Integration&apos;
+   bat &quot;mvn tomcat7:deploy&quot;
+   //deploy &apos;target/Training-0.0.1-SNAPSHOT.war&apos;, &apos;staging&apos;
+   // Mark the code integration tests &apos;stage&apos;
+   stage &apos;Integration Tests&apos;
+   
+   // mark the code deployment &apos;stage&apos;
+   stage &apos;Deployment to Production&apos;
+}
+
+/*def deploy(war, id) {
+    dir(&apos;target&apos;) {
+    bat &quot;xcopy /E Training-0.0.1-SNAPSHOT C:\\Users\\ybaker.CSCFED\\Dev\\apache-tomcat-7.0.70\\webapps\\training&quot;
+    bat &quot;xcopy /E Training-0.0.1-SNAPSHOT.war C:\\Users\\ybaker.CSCFED\\Dev\\apache-tomcat-7.0.70\\webapps\\training&quot;
+    // sh &quot;cp ${war} /tmp/webapps/${id}.war&quot;
+    }
+}*/</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <authToken>sup</authToken>
+</flow-definition>
