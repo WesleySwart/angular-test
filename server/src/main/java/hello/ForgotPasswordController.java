@@ -29,10 +29,8 @@ import test.generated.tables.pojos.Login;
 
 @RestController
 @ContextConfiguration(locations = {"/jooq-spring.xml"})
-@ComponentScan("main.java.hello")
 public class ForgotPasswordController
 {
-	private DSLContext create;
 	
 	@Value("${spring.datasource.url}")
 	String db_url;
@@ -40,14 +38,8 @@ public class ForgotPasswordController
 	String username;
 	@Value("${spring.datasource.password}")
 	String password;
-
-	
-	@Autowired
-	public ForgotPasswordController(DSLContext create)
-	{
-		this.create = create;
-	}
-	
+	/*@Autowired
+	DSLContext create;*/
 	
 	public Login ChangeUser(String name, String pass)
 	{
@@ -67,7 +59,6 @@ public class ForgotPasswordController
 				login.setUsername(name);
 				login.setPassword(pass);
 				loginDao.update(login);
-				create.close();
 				conn.close();
 				return login;
 			}
@@ -76,7 +67,6 @@ public class ForgotPasswordController
 			{
 				login.setUsername("1");
 				login.setPassword("1");
-				create.close();
 				conn.close();
 				return login;
 			}

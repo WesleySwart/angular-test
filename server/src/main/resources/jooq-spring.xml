@@ -36,7 +36,7 @@
     </bean>
 
     <!-- Configure the DSL object, optionally overriding jOOQ Exceptions with Spring Exceptions -->
-    <bean id="dsl" class="org.jooq.impl.DefaultDSLContext">
+    <bean id="configuration" class="org.jooq.Configuration">
         <constructor-arg ref="config" />
     </bean>
     
