@@ -1,6 +1,5 @@
 package hello;
 
-import static test.generated.Tables.LOGIN;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,16 +7,9 @@ import java.sql.SQLException;
 import java.util.Map;
 
 import org.jooq.Configuration;
-import org.jooq.DSLContext;
-import org.jooq.Record1;
-import org.jooq.Result;
 import org.jooq.SQLDialect;
-import org.jooq.impl.DSL;
 import org.jooq.impl.DefaultConfiguration;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,7 +20,6 @@ import test.generated.tables.daos.LoginDao;
 import test.generated.tables.pojos.Login;
 
 @RestController
-@ContextConfiguration(locations = {"/jooq-spring.xml"})
 public class ForgotPasswordController
 {
 	

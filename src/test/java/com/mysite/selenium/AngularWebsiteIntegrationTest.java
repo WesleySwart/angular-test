@@ -9,22 +9,22 @@ import org.junit.Test;
 @Config(
 		
         browser = Browser.CHROME,
-        url     = "http://localhost:3000/sendEmail"
+        url     = "http://localhost:8080/sendEmail"
 )
 
-public class AngularWebsiteTest extends Locomotive {
+public class AngularWebsiteIntegrationTest extends Locomotive {
 
 	@Test
 	public void testHomepage()
 	{
-		validateUrl("http://localhost:3000/sendEmail");
+		validateUrl("http://localhost:8080/sendEmail");
 	}
 	
 	@Test
 	public void testEmailButtonWorks() 
 	{
 		click(MyWebsite.LOC_LNK_EMAILNAVIGATOR);
-		validateUrl("http://localhost:3000/sendEmail");
+		validateUrl("http://localhost:8080/sendEmail");
 		validatePresent(MyWebsite.LOC_BTN_SENDEMAILBUTTON);
 		click(MyWebsite.LOC_BTN_SENDEMAILBUTTON);
 	}
@@ -33,7 +33,7 @@ public class AngularWebsiteTest extends Locomotive {
 	public void testMessagesButtonsWorks() 
 	{
 		click(MyWebsite.LOC_LNK_MESSAGENAVIGATOR);
-		validateUrl("http://localhost:3000/message");
+		validateUrl("http://localhost:8080/message");
 		validatePresent(MyWebsite.LOC_BTN_SENDMESSAGEBUTTON);
 		validatePresent(MyWebsite.LOC_BTN_RECEIVEMESSAGEBUTTON);
 		click(MyWebsite.LOC_BTN_SENDMESSAGEBUTTON);
