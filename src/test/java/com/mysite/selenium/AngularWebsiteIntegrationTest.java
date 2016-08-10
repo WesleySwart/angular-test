@@ -12,7 +12,7 @@ import org.junit.Test;
         url     = "http://localhost:3000/sendEmail"
 )
 
-public class AngularWebsiteTest extends Locomotive {
+public class AngularWebsiteIntegrationTest extends Locomotive {
 
 	@Test
 	public void testHomepage()
