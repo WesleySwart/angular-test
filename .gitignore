@@ -1,1 +1,4 @@
 /target/
+
+/server/src/main/resources/public/node_modules
+/server/src/main/resources/public/typings
