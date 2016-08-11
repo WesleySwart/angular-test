@@ -9,12 +9,14 @@ import java.util.Map;
 import org.jooq.Configuration;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DefaultConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
 
 import test.generated.tables.daos.LoginDao;
 import test.generated.tables.pojos.Login;
@@ -23,12 +25,14 @@ import test.generated.tables.pojos.Login;
 public class ForgotPasswordController
 {
 	
-	@Value("${spring.datasource.url}")
+	@Value("${useDefault:spring.datasource.url}")
 	String db_url;
-	@Value("${spring.datasource.username}")
+	@Value("${useDefault:spring.datasource.username}")
 	String username;
-	@Value("${spring.datasource.password}")
+	@Value("${useDefault:spring.datasource.password}")
 	String password;
+	@Value("${emptyDefault:}")
+	String emptyValue;
 	/*@Autowired
 	DSLContext create;*/
 	

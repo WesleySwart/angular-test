@@ -34,12 +34,14 @@ import org.springframework.beans.factory.annotation.*;
 public class LoginController
 {
 	boolean debug = true;
-	@Value("${spring.datasource.url}")
+	@Value("${useDefault:spring.datasource.url}")
 	String db_url;
-	@Value("${spring.datasource.username}")
+	@Value("${useDefault:spring.datasource.username}")
 	String username;
-	@Value("${spring.datasource.password}")
+	@Value("${useDefault:spring.datasource.password}")
 	String password;
+	@Value("${emptyDefault:}")
+	String emptyValue;
 	
 	public boolean CheckUser(String name, String pass)
 	{
