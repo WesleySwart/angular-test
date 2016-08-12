@@ -9,7 +9,7 @@ import io.ddavison.conductor.Locomotive;
 
 @Config(
 	
-        browser = Browser.CHROME,
+        browser = Browser.FIREFOX,
         url     = "http://seleniumhq.org"
 )
 
